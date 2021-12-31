@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"log"
+	"net/url"
 	"os"
 	"strings"
 
@@ -118,9 +119,13 @@ func searchArticles(query, lang string) client.SearchResult {
 }
 
 func createPageUrl(title, lang string) string {
+    u := &url.URL{}
+    u.Scheme = "https"
 	if lang == "" {
-		return fmt.Sprintf("https://%s.wikipedia.org/wiki/%s", "en", title)
+        u.Host = fmt.Sprintf("%s.wikipedia.org", "en")
 	} else {
-		return fmt.Sprintf("https://%s.wikipedia.org/wiki/%s", lang, title)
+        u.Host = fmt.Sprintf("%s.wikipedia.org", lang)
 	}
+    u.Path = fmt.Sprintf("wiki/%s", title)
+    return u.String()
 }
