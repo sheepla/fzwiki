@@ -9,6 +9,7 @@ import (
 
 	flags "github.com/jessevdk/go-flags"
 	"github.com/ktr0731/go-fuzzyfinder"
+	"github.com/mattn/go-runewidth"
 	"github.com/sheepla/fzwiki/client"
 	"github.com/toqueteos/webbrowser"
 	"golang.org/x/net/html"
@@ -72,7 +73,11 @@ func main() {
 			if i == -1 {
 				return ""
 			}
-			return fmt.Sprintf("%s\n\n%s", result.Query.Search[i].Title, result.Query.Search[i].Snippet)
+			return fmt.Sprintf(
+                "%s\n---\n%s", 
+                result.Query.Search[i].Title, 
+                runewidth.Wrap(result.Query.Search[i].Snippet, w),
+            )
 		},
 		),
 	)
