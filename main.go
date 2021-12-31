@@ -16,8 +16,8 @@ import (
 )
 
 type Options struct {
-	Open     bool   `short:"o" long:"open" description:"open URL with webbrowser"`
-	Language string `short:"l" long:"lang" description:"wikipedia language"`
+	Open     bool   `short:"o" long:"open" description:"open URL in your web browser"`
+	Language string `short:"l" long:"lang" description:"language for wikipedia.org such as \"en\", \"ja\", ..."`
 }
 
 var opts Options
