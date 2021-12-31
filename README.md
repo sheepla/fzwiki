@@ -47,3 +47,7 @@ TODO
 ## LICENSE
 
 [MIT](./LICENSE)
+
+## Contributing
+
+Welcome! 💕
