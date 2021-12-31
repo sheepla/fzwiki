@@ -1,15 +1,19 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"log"
 	"strings"
+
+	"golang.org/x/net/html"
+
+	"os"
 
 	flags "github.com/jessevdk/go-flags"
 	"github.com/ktr0731/go-fuzzyfinder"
 	"github.com/sheepla/fzwiki/client"
 	"github.com/toqueteos/webbrowser"
-	"os"
 )
 
 type Options struct {
@@ -18,6 +22,25 @@ type Options struct {
 }
 
 var opts Options
+
+func render(n *html.Node, buf *bytes.Buffer) {
+	if n.Type == html.TextNode {
+		buf.WriteString(n.Data)
+	}
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		render(c, buf)
+	}
+}
+
+func html2text(content string) (string, error) {
+	doc, err := html.Parse(strings.NewReader(content))
+	if err != nil {
+		return "", err
+	}
+	var buf bytes.Buffer
+	render(doc, &buf)
+	return buf.String(), nil
+}
 
 func main() {
 	parser := flags.NewParser(&opts, flags.Default)
@@ -35,6 +58,14 @@ func main() {
 	}
 
 	result := searchArticles(strings.Join(args, " "), opts.Language)
+	for i := 0; i < len(result.Query.Search); i++ {
+		if t, err := html2text(result.Query.Search[i].Title); err == nil {
+			result.Query.Search[i].Title = t
+		}
+		if t, err := html2text(result.Query.Search[i].Snippet); err == nil {
+			result.Query.Search[i].Snippet = t
+		}
+	}
 
 	choices, err := fuzzyfinder.FindMulti(
 		result.Query.Search,
@@ -71,9 +102,9 @@ func searchArticles(query, lang string) client.SearchResult {
 }
 
 func createPageUrl(title, lang string) string {
-    if lang == "" {
-        return fmt.Sprintf("https://%s.wikipedia.org/wiki/%s", "en", title)
-    } else {
-        return fmt.Sprintf("https://%s.wikipedia.org/wiki/%s", lang, title)
-    }
+	if lang == "" {
+		return fmt.Sprintf("https://%s.wikipedia.org/wiki/%s", "en", title)
+	} else {
+		return fmt.Sprintf("https://%s.wikipedia.org/wiki/%s", lang, title)
+	}
 }
