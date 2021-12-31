@@ -54,6 +54,7 @@ func main() {
 
 	if len(args) == 0 {
 		parser.WriteHelp(os.Stdout)
+		fmt.Fprintln(os.Stderr, "Must require argument(s).")
 		os.Exit(1)
 	}
 
