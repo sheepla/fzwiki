@@ -24,11 +24,11 @@ type SearchResult struct {
 func CreateUrl(query, lang string) string {
 	u := &url.URL{}
 	u.Scheme = "https"
-    if lang == "" {
-        u.Host = fmt.Sprintf("%s.wikipedia.org", "en")
-    } else {
-        u.Host = fmt.Sprintf("%s.wikipedia.org", lang)
-    }
+	if lang == "" {
+		u.Host = fmt.Sprintf("%s.wikipedia.org", "en")
+	} else {
+		u.Host = fmt.Sprintf("%s.wikipedia.org", lang)
+	}
 	u.Path = "w/api.php"
 
 	q := u.Query()
