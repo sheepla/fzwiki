@@ -14,6 +14,10 @@ A command with fzf-like UI to quickly search Wikipedia articles and open it in y
 
 ## Usage
 
+1. Run the command by specifying a search query.
+2. Press the `<Tab>` key to select item(s), then press `<Enter>` key to confirm the selection.
+3. The pages URL of the selected items will output. If you specify the `-o`, `--open` flag, it will open the page in your default browser.
+
 ```
 Usage:
   fzwiki [OPTIONS] QUERY...
@@ -25,3 +29,7 @@ Application Options:
 Help Options:
   -h, --help  Show this help message
 ```
+
+## LICENSE
+
+[MIT](./LICENSE)
