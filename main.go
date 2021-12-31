@@ -4,16 +4,14 @@ import (
 	"bytes"
 	"fmt"
 	"log"
-	"strings"
-
-	"golang.org/x/net/html"
-
 	"os"
+	"strings"
 
 	flags "github.com/jessevdk/go-flags"
 	"github.com/ktr0731/go-fuzzyfinder"
 	"github.com/sheepla/fzwiki/client"
 	"github.com/toqueteos/webbrowser"
+	"golang.org/x/net/html"
 )
 
 type Options struct {
