@@ -75,11 +75,11 @@ func main() {
 				return ""
 			}
 			return fmt.Sprintf(
-                "%s\n\n%s\n\n%s", 
-                result.Query.Search[i].Title, 
-                runewidth.Wrap(result.Query.Search[i].Snippet, w),
-                humanize.Time(result.Query.Search[i].Timestamp),
-            )
+				"%s\n\n%s\n\n%s",
+				result.Query.Search[i].Title,
+				runewidth.Wrap(result.Query.Search[i].Snippet, w),
+				humanize.Time(result.Query.Search[i].Timestamp),
+			)
 		},
 		),
 	)
