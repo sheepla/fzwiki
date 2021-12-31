@@ -82,17 +82,18 @@ func main() {
 	choices, err := fuzzyfinder.FindMulti(
 		result.Query.Search,
 		func(i int) string { return result.Query.Search[i].Title },
-		fuzzyfinder.WithPreviewWindow(func(i, w, h int) string {
-			if i == -1 {
-				return ""
-			}
-			return fmt.Sprintf(
-				"%s\n\n%s\n\n%s",
-				result.Query.Search[i].Title,
-				runewidth.Wrap(result.Query.Search[i].Snippet, w),
-				humanize.Time(result.Query.Search[i].Timestamp),
-			)
-		},
+		fuzzyfinder.WithPreviewWindow(
+			func(i, w, h int) string {
+				if i == -1 {
+					return ""
+				}
+				return fmt.Sprintf(
+					"%s\n\n%s\n\n%s",
+					result.Query.Search[i].Title,
+					runewidth.Wrap(result.Query.Search[i].Snippet, w),
+					humanize.Time(result.Query.Search[i].Timestamp),
+				)
+			},
 		),
 	)
 
