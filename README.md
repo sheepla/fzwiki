@@ -10,6 +10,7 @@
 
 A command with fzf-like UI to quickly search Wikipedia articles and open it in your browser.
 
+<img src="https://user-images.githubusercontent.com/62412884/147824124-b3e26a5a-752a-4714-9ceb-f552a0648ebb.png" />
 </div>
 
 ## Usage
