@@ -18,12 +18,12 @@ import (
 )
 
 const (
-    AppVersion = "0.0.1"
-    AppName = "fzwiki"
+	AppVersion = "0.0.1"
+	AppName    = "fzwiki"
 )
 
 type Options struct {
-    Version  bool   `short:"V" long:"version" description:"show version"`
+	Version  bool   `short:"V" long:"version" description:"show version"`
 	Open     bool   `short:"o" long:"open" description:"open URL in your web browser"`
 	Language string `short:"l" long:"lang" description:"language for wikipedia.org such as \"en\", \"ja\", ..."`
 }
@@ -59,10 +59,10 @@ func main() {
 		os.Exit(1)
 	}
 
-    if opts.Version {
-        fmt.Printf("%s: v%s\n", AppName, AppVersion)
-        os.Exit(0)
-    }
+	if opts.Version {
+		fmt.Printf("%s: v%s\n", AppName, AppVersion)
+		os.Exit(0)
+	}
 
 	if len(args) == 0 {
 		fmt.Fprintln(os.Stderr, "Must require argument(s).")
@@ -119,13 +119,13 @@ func searchArticles(query, lang string) client.SearchResult {
 }
 
 func createPageUrl(title, lang string) string {
-    u := &url.URL{}
-    u.Scheme = "https"
+	u := &url.URL{}
+	u.Scheme = "https"
 	if lang == "" {
-        u.Host = fmt.Sprintf("%s.wikipedia.org", "en")
+		u.Host = fmt.Sprintf("%s.wikipedia.org", "en")
 	} else {
-        u.Host = fmt.Sprintf("%s.wikipedia.org", lang)
+		u.Host = fmt.Sprintf("%s.wikipedia.org", lang)
 	}
-    u.Path = fmt.Sprintf("wiki/%s", title)
-    return u.String()
+	u.Path = fmt.Sprintf("wiki/%s", title)
+	return u.String()
 }
