@@ -16,7 +16,13 @@ import (
 	"golang.org/x/net/html"
 )
 
+const (
+    AppVersion = "0.0.1"
+    AppName = "fzwiki"
+)
+
 type Options struct {
+    Version  bool   `short:"V" long:"version" description:"show version"`
 	Open     bool   `short:"o" long:"open" description:"open URL in your web browser"`
 	Language string `short:"l" long:"lang" description:"language for wikipedia.org such as \"en\", \"ja\", ..."`
 }
@@ -44,13 +50,18 @@ func html2text(content string) (string, error) {
 
 func main() {
 	parser := flags.NewParser(&opts, flags.Default)
-	parser.Name = "fzwiki"
+	parser.Name = AppName
 	parser.Usage = "[OPTIONS] QUERY..."
 	args, err := parser.Parse()
 	if err != nil {
 		log.Fatal(err)
 		os.Exit(1)
 	}
+
+    if opts.Version {
+        fmt.Printf("%s: v%s\n", AppName, AppVersion)
+        os.Exit(0)
+    }
 
 	if len(args) == 0 {
 		fmt.Fprintln(os.Stderr, "Must require argument(s).")
