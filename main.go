@@ -43,7 +43,7 @@ func main() {
 			if i == -1 {
 				return ""
 			}
-			return fmt.Sprintf("Title: %s\nSnippet: %s", result.Query.Search[i].Title, result.Query.Search[i].Snippet)
+			return fmt.Sprintf("%s\n\n%s", result.Query.Search[i].Title, result.Query.Search[i].Snippet)
 		},
 		),
 	)
