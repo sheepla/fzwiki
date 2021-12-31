@@ -7,6 +7,7 @@ import (
 	"os"
 	"strings"
 
+	humanize "github.com/dustin/go-humanize"
 	flags "github.com/jessevdk/go-flags"
 	"github.com/ktr0731/go-fuzzyfinder"
 	"github.com/mattn/go-runewidth"
@@ -74,9 +75,10 @@ func main() {
 				return ""
 			}
 			return fmt.Sprintf(
-                "%s\n---\n%s", 
+                "%s\n\n%s\n\n%s", 
                 result.Query.Search[i].Title, 
                 runewidth.Wrap(result.Query.Search[i].Snippet, w),
+                humanize.Time(result.Query.Search[i].Timestamp),
             )
 		},
 		),
