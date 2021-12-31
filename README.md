@@ -30,6 +30,20 @@ Help Options:
   -h, --help  Show this help message
 ```
 
+## Installation
+
+### Build from source
+
+```bash
+git clone https://github.com/sheepla/fzwiki.git
+cd fzwiki
+go install
+```
+
+### Binary
+
+TODO
+
 ## LICENSE
 
 [MIT](./LICENSE)
