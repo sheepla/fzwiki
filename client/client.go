@@ -21,7 +21,7 @@ type SearchResult struct {
 	} `json:"query"`
 }
 
-func CreateUrl(query, lang string) string {
+func CreateSearchURL(query, lang string) string {
 	u := &url.URL{}
 	u.Scheme = "https"
 	if lang == "" {

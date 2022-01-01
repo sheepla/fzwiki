@@ -18,17 +18,17 @@ import (
 )
 
 const (
-	AppVersion = "0.0.1"
-	AppName    = "fzwiki"
+	appVersion = "0.0.1"
+	appName    = "fzwiki"
 )
 
-type Options struct {
+type options struct {
 	Version  bool   `short:"V" long:"version" description:"Show version"`
 	Open     bool   `short:"o" long:"open" description:"Open URL in your web browser"`
 	Language string `short:"l" long:"lang" description:"Language for wikipedia.org such as \"en\", \"ja\", ..."`
 }
 
-var opts Options
+var opts options
 
 func render(n *html.Node, buf *bytes.Buffer) {
 	if n.Type == html.TextNode {
@@ -51,7 +51,7 @@ func html2text(content string) (string, error) {
 
 func main() {
 	parser := flags.NewParser(&opts, flags.Default)
-	parser.Name = AppName
+	parser.Name = appName
 	parser.Usage = "[OPTIONS] QUERY..."
 	args, err := parser.Parse()
 	if err != nil {
@@ -60,7 +60,7 @@ func main() {
 	}
 
 	if opts.Version {
-		fmt.Printf("%s: v%s\n", AppName, AppVersion)
+		fmt.Printf("%s: v%s\n", appName, appVersion)
 		os.Exit(0)
 	}
 
@@ -101,8 +101,8 @@ func main() {
 		log.Fatal(err)
 	}
 
-	for _, i := range choices {
-		url := createPageUrl(result.Query.Search[i].Title, opts.Language)
+	for _, idx := range choices {
+		url := createPageURL(result.Query.Search[idx].Title, opts.Language)
 		if opts.Open {
 			if err := webbrowser.Open(url); err != nil {
 				log.Fatal(err)
@@ -114,12 +114,12 @@ func main() {
 }
 
 func searchArticles(query, lang string) client.SearchResult {
-	url := client.CreateUrl(query, lang)
+	url := client.CreateSearchURL(query, lang)
 	result := client.Execute(url)
 	return result
 }
 
-func createPageUrl(title, lang string) string {
+func createPageURL(title, lang string) string {
 	u := &url.URL{}
 	u.Scheme = "https"
 	if lang == "" {
