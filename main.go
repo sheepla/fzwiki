@@ -23,9 +23,9 @@ const (
 )
 
 type Options struct {
-	Version  bool   `short:"V" long:"version" description:"show version"`
-	Open     bool   `short:"o" long:"open" description:"open URL in your web browser"`
-	Language string `short:"l" long:"lang" description:"language for wikipedia.org such as \"en\", \"ja\", ..."`
+	Version  bool   `short:"V" long:"version" description:"Show version"`
+	Open     bool   `short:"o" long:"open" description:"Open URL in your web browser"`
+	Language string `short:"l" long:"lang" description:"Language for wikipedia.org such as \"en\", \"ja\", ..."`
 }
 
 var opts Options
