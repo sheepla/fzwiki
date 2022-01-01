@@ -22,15 +22,15 @@ A command with fzf-like UI to quickly search Wikipedia articles and open it in y
 ### Help message
 
 ```
-Usage:
-  fzwiki [OPTIONS] QUERY...
+fzwiki [OPTIONS] QUERY...
 
 Application Options:
-  -o, --open  open URL with webbrowser
-  -l, --lang= wikipedia language
+  -V, --version  Show version
+  -o, --open     Open URL in your web browser
+  -l, --lang=    Language for wikipedia.org such as "en", "ja", ...
 
 Help Options:
-  -h, --help  Show this help message
+  -h, --help     Show this help message
 ```
 
 ### Key bindings
