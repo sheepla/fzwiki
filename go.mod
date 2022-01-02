@@ -1,6 +1,6 @@
 module github.com/sheepla/fzwiki
 
-go 1.16
+go 1.17
 
 require (
 	github.com/jessevdk/go-flags v1.5.0
