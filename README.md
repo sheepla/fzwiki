@@ -55,7 +55,7 @@ go install
 
 ### Binary
 
-You can download executable binary from the release page.
+You can download executable binaries from the release page.
 
 > [Latest Release](https://github.com/sheepla/fzwiki/releases/latest)
 
