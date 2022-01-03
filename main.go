@@ -55,7 +55,7 @@ func main() {
 	parser.Usage = "[OPTIONS] QUERY..."
 	args, err := parser.Parse()
 	if err != nil {
-		log.Fatal(err)
+        fmt.Fprintln(os.Stderr, "Argument parsing failed.")
 		os.Exit(1)
 	}
 
