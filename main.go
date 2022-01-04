@@ -55,7 +55,7 @@ func main() {
 	parser.Usage = "[OPTIONS] QUERY..."
 	args, err := parser.Parse()
 	if err != nil {
-        fmt.Fprintln(os.Stderr, "Argument parsing failed.")
+		fmt.Fprintln(os.Stderr, "Argument parsing failed.")
 		os.Exit(1)
 	}
 
@@ -90,7 +90,7 @@ func main() {
 				return fmt.Sprintf(
 					"%s\n\n%s\n\n%s",
 					result.Query.Search[i].Title,
-					runewidth.Wrap(result.Query.Search[i].Snippet, w),
+					runewidth.Wrap(result.Query.Search[i].Snippet, w/2-5),
 					humanize.Time(result.Query.Search[i].Timestamp),
 				)
 			},
