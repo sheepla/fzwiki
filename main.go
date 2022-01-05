@@ -17,10 +17,17 @@ import (
 	"golang.org/x/net/html"
 )
 
+type exitCode int
+
 const (
 	appVersion  = "0.0.5"
 	appName     = "fzwiki"
 	envNameLang = "FZWIKI_LANG"
+
+	exitCodeOK exitCode = iota
+	exitCodeErr
+	exitCodeErrFuzzyFinder
+	exitCodeErrWebBrowser
 )
 
 type options struct {
@@ -51,27 +58,27 @@ func html2text(content string) (string, error) {
 }
 
 func main() {
-	os.Exit(Main(os.Args))
+	os.Exit(int(Main(os.Args)))
 }
 
-func Main(args []string) int {
+func Main(args []string) exitCode {
 	parser := flags.NewParser(&opts, flags.Default)
 	parser.Name = appName
 	parser.Usage = "[OPTIONS] QUERY..."
 	args, err := parser.ParseArgs(args)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Argument parsing failed.")
-		return 1
+		return exitCodeErr
 	}
 
 	if opts.Version {
 		fmt.Printf("%s: v%s\n", appName, appVersion)
-		return 0
+		return exitCodeOK
 	}
 
 	if len(args) == 0 {
 		fmt.Fprintln(os.Stderr, "Must require argument(s).")
-		return 1
+		return exitCodeErr
 	}
 
 	var lang string
@@ -84,7 +91,7 @@ func Main(args []string) int {
 	result, err := searchArticles(strings.Join(args, " "), lang)
 	if err != nil {
 		log.Fatal(err)
-		return 1
+		return exitCodeErr
 	}
 	for i := 0; i < len(result.Query.Search); i++ {
 		if t, err := html2text(result.Query.Search[i].Title); err == nil {
@@ -115,7 +122,7 @@ func Main(args []string) int {
 
 	if err != nil {
 		log.Fatal(err)
-		return 2
+		return exitCodeErrFuzzyFinder
 	}
 
 	for _, idx := range choices {
@@ -123,14 +130,14 @@ func Main(args []string) int {
 		if opts.Open {
 			if err := webbrowser.Open(url); err != nil {
 				log.Fatal(err)
-				return 3
+				return exitCodeErrWebBrowser
 			}
 		} else {
 			fmt.Println(url)
 		}
 	}
 
-	return 0
+	return exitCodeOK
 }
 
 func searchArticles(query, lang string) (*client.SearchResult, error) {
