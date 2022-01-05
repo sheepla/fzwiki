@@ -70,7 +70,8 @@ FZWIKI_LANG="ja" fzwiki ... # --> search from ja.wikipedia.org instead of en.wik
 If you want to make the setting persistent,
 add the following line to your rc file of the shell.
 
-- **bash** (`~/.bashrc`) or **zsh** (~/.zshrc):
+
+- **bash** (`~/.bashrc`) or **zsh** (`~/.zshrc`):
 
 ```bash
 export FZWIKI_LANG="ja"
