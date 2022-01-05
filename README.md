@@ -59,29 +59,6 @@ You can download executable binaries from the release page.
 
 > [Latest Release](https://github.com/sheepla/fzwiki/releases/latest)
 
-## Configuration
-
-You can change the default language by setting a value in the environment variable `FZWIKI_LANG` .
-
-```bash
-FZWIKI_LANG="ja" fzwiki ... # --> search from ja.wikipedia.org instead of en.wikipedia.org
-```
-
-If you want to make the setting persistent,
-add the following line to your rc file of the shell.
-
-- **bash** (`~/.bashrc`) or **zsh** (~/.zshrc):
-
-```bash
-export FZWIKI_LANG="ja"
-```
-
-- **fish** (`~/.config/fish/config.fish`):
-
-```fish
-set -Ux FZWIKI_LANG ja
-```
-
 ## LICENSE
 
 [MIT](./LICENSE)
