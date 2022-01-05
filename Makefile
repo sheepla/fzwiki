@@ -3,6 +3,10 @@ BIN := bin/$(NAME)
 COVERAGE_OUT := .test/cover.out
 COVERAGE_HTML := .test/cover.html
 
+.PHONY: fmt
+fmt:
+	go fmt
+
 .PHONY: build
 build:
 	go build -o $(BIN)
