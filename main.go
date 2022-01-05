@@ -111,7 +111,7 @@ func main() {
 	}
 
 	for _, idx := range choices {
-		url := createPageURL(result.Query.Search[idx].Title, opts.Language)
+		url := createPageURL(result.Query.Search[idx].Title, lang)
 		if opts.Open {
 			if err := webbrowser.Open(url); err != nil {
 				log.Fatal(err)
