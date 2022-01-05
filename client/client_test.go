@@ -40,3 +40,36 @@ func TestCreateSearchURL(t *testing.T) {
 		})
 	}
 }
+
+func TestExecute(t *testing.T) {
+	tests := []struct {
+		desc    string
+		url     string
+		wantErr bool
+	}{
+		{
+			desc:    "normal: search succeeds",
+			url:     "https://ja.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=%E3%81%82",
+			wantErr: false,
+		},
+		{
+			desc:    "abnormal: raises error when url is empty",
+			url:     "",
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.desc, func(t *testing.T) {
+			assert := assert.New(t)
+
+			got, err := Execute(tt.url)
+			if tt.wantErr {
+				assert.Error(err)
+				return
+			}
+
+			assert.NoError(err)
+			assert.NotNil(got)
+		})
+	}
+}
