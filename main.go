@@ -77,8 +77,11 @@ func main() {
 		lang = opts.Language
 	}
 
-	result := searchArticles(strings.Join(args, " "), lang)
-
+	result, err := searchArticles(strings.Join(args, " "), lang)
+	if err != nil {
+		log.Fatal(err)
+		os.Exit(1)
+	}
 	for i := 0; i < len(result.Query.Search); i++ {
 		if t, err := html2text(result.Query.Search[i].Title); err == nil {
 			result.Query.Search[i].Title = t
@@ -122,10 +125,9 @@ func main() {
 	}
 }
 
-func searchArticles(query, lang string) client.SearchResult {
+func searchArticles(query, lang string) (*client.SearchResult, error) {
 	url := client.CreateSearchURL(query, lang)
-	result := client.Execute(url)
-	return result
+	return client.Execute(url)
 }
 
 func createPageURL(title, lang string) string {
