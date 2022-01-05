@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"net/url"
 	"time"
@@ -40,21 +39,21 @@ func CreateSearchURL(query, lang string) string {
 	return u.String()
 }
 
-func Execute(url string) SearchResult {
+func Execute(url string) (*SearchResult, error) {
 	res, err := http.Get(url)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 	defer res.Body.Close()
 
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
 	var result SearchResult
 	if err := json.Unmarshal(body, &result); err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
-	return result
+	return &result, nil
 }
