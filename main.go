@@ -18,7 +18,7 @@ import (
 )
 
 const (
-	appVersion  = "0.0.4"
+	appVersion  = "0.0.5"
 	appName     = "fzwiki"
 	envNameLang = "FZWIKI_LANG"
 )
