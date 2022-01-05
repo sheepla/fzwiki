@@ -18,8 +18,9 @@ import (
 )
 
 const (
-	appVersion = "0.0.4"
-	appName    = "fzwiki"
+	appVersion  = "0.0.4"
+	appName     = "fzwiki"
+	envNameLang = "FZWIKI_LANG"
 )
 
 type options struct {
@@ -69,7 +70,15 @@ func main() {
 		os.Exit(1)
 	}
 
-	result := searchArticles(strings.Join(args, " "), opts.Language)
+	var lang string
+	if opts.Language == "" {
+		lang = os.Getenv(envNameLang)
+	} else {
+		lang = opts.Language
+	}
+
+	result := searchArticles(strings.Join(args, " "), lang)
+
 	for i := 0; i < len(result.Query.Search); i++ {
 		if t, err := html2text(result.Query.Search[i].Title); err == nil {
 			result.Query.Search[i].Title = t
@@ -102,7 +111,7 @@ func main() {
 	}
 
 	for _, idx := range choices {
-		url := createPageURL(result.Query.Search[idx].Title, opts.Language)
+		url := createPageURL(result.Query.Search[idx].Title, lang)
 		if opts.Open {
 			if err := webbrowser.Open(url); err != nil {
 				log.Fatal(err)
