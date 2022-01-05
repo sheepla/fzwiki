@@ -58,7 +58,7 @@ func html2text(content string) (string, error) {
 }
 
 func main() {
-	os.Exit(int(Main(os.Args)))
+	os.Exit(int(Main(os.Args[1:])))
 }
 
 func Main(args []string) exitCode {
