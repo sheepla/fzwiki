@@ -36,8 +36,6 @@ type options struct {
 	Language string `short:"l" long:"lang" description:"Language for wikipedia.org such as \"en\", \"ja\", ..."`
 }
 
-var opts options
-
 func render(n *html.Node, buf *bytes.Buffer) {
 	if n.Type == html.TextNode {
 		buf.WriteString(n.Data)
@@ -62,6 +60,7 @@ func main() {
 }
 
 func Main(args []string) exitCode {
+	var opts options
 	parser := flags.NewParser(&opts, flags.Default)
 	parser.Name = appName
 	parser.Usage = "[OPTIONS] QUERY..."
