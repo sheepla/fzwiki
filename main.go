@@ -51,23 +51,27 @@ func html2text(content string) (string, error) {
 }
 
 func main() {
+	os.Exit(Main(os.Args))
+}
+
+func Main(args []string) int {
 	parser := flags.NewParser(&opts, flags.Default)
 	parser.Name = appName
 	parser.Usage = "[OPTIONS] QUERY..."
-	args, err := parser.Parse()
+	args, err := parser.ParseArgs(args)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Argument parsing failed.")
-		os.Exit(1)
+		return 1
 	}
 
 	if opts.Version {
 		fmt.Printf("%s: v%s\n", appName, appVersion)
-		os.Exit(0)
+		return 0
 	}
 
 	if len(args) == 0 {
 		fmt.Fprintln(os.Stderr, "Must require argument(s).")
-		os.Exit(1)
+		return 1
 	}
 
 	var lang string
@@ -80,7 +84,7 @@ func main() {
 	result, err := searchArticles(strings.Join(args, " "), lang)
 	if err != nil {
 		log.Fatal(err)
-		os.Exit(1)
+		return 1
 	}
 	for i := 0; i < len(result.Query.Search); i++ {
 		if t, err := html2text(result.Query.Search[i].Title); err == nil {
@@ -111,6 +115,7 @@ func main() {
 
 	if err != nil {
 		log.Fatal(err)
+		return 2
 	}
 
 	for _, idx := range choices {
@@ -118,11 +123,14 @@ func main() {
 		if opts.Open {
 			if err := webbrowser.Open(url); err != nil {
 				log.Fatal(err)
+				return 3
 			}
 		} else {
 			fmt.Println(url)
 		}
 	}
+
+	return 0
 }
 
 func searchArticles(query, lang string) (*client.SearchResult, error) {
