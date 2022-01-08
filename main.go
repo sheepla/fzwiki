@@ -73,14 +73,6 @@ func Main(args []string) exitCode {
 		log.Fatal(err)
 		return exitCodeErr
 	}
-	for i := 0; i < len(result.Query.Search); i++ {
-		if t, err := html2text(result.Query.Search[i].Title); err == nil {
-			result.Query.Search[i].Title = t
-		}
-		if t, err := html2text(result.Query.Search[i].Snippet); err == nil {
-			result.Query.Search[i].Snippet = t
-		}
-	}
 
 	choices, err := fuzzyfinder.FindMulti(
 		result.Query.Search,
@@ -90,16 +82,10 @@ func Main(args []string) exitCode {
 				if i == -1 {
 					return ""
 				}
-				return fmt.Sprintf(
-					"%s\n\n%s\n\n%s",
-					result.Query.Search[i].Title,
-					runewidth.Wrap(result.Query.Search[i].Snippet, w/2-5),
-					humanize.Time(result.Query.Search[i].Timestamp),
-				)
+				return createPreview(i, w, h, result)
 			},
 		),
 	)
-
 	if err != nil {
 		log.Fatal(err)
 		return exitCodeErrFuzzyFinder
@@ -120,15 +106,6 @@ func Main(args []string) exitCode {
 	return exitCodeOK
 }
 
-func render(n *html.Node, buf *bytes.Buffer) {
-	if n.Type == html.TextNode {
-		buf.WriteString(n.Data)
-	}
-	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		render(c, buf)
-	}
-}
-
 func html2text(content string) (string, error) {
 	doc, err := html.Parse(strings.NewReader(content))
 	if err != nil {
@@ -137,6 +114,15 @@ func html2text(content string) (string, error) {
 	var buf bytes.Buffer
 	render(doc, &buf)
 	return buf.String(), nil
+}
+
+func render(n *html.Node, buf *bytes.Buffer) {
+	if n.Type == html.TextNode {
+		buf.WriteString(n.Data)
+	}
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		render(c, buf)
+	}
 }
 
 func searchArticles(query, lang string) (*client.SearchResult, error) {
@@ -154,4 +140,20 @@ func createPageURL(title, lang string) string {
 	}
 	u.Path = fmt.Sprintf("wiki/%s", title)
 	return u.String()
+}
+
+func createPreview(i, w, h int, result *client.SearchResult) string {
+	title := result.Query.Search[i].Title
+	snippet := result.Query.Search[i].Snippet
+	timestamp := result.Query.Search[i].Timestamp
+	s, err := html2text(snippet)
+	if err == nil {
+		snippet = s
+	}
+	return fmt.Sprintf(
+		"%s\n\n%s\n\n%s",
+		title,
+		runewidth.Wrap(snippet, w/2-5),
+		humanize.Time(timestamp),
+	)
 }
