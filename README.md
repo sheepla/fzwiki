@@ -10,7 +10,10 @@
 
 A command line tool with fzf-like UI to search Wikipedia articles and open it in your browser quickly.
 
-<img src="https://user-images.githubusercontent.com/62412884/148137551-4d2523e6-3292-48bf-896a-52d09f9d0a3e.png" />
+</div>
+
+<div align="center">
+<img src="https://user-images.githubusercontent.com/62412884/148652520-0dcfafa3-f7e4-4a3d-b9e7-ed93ae74bab4.gif" />
 </div>
 
 ## Usage
