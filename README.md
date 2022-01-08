@@ -61,7 +61,7 @@ You can download executable binaries from the release page.
 
 **NOTE**:
 
-With tools like [ghg](https://github.com/songmu/ghg), you can easily install executable from GitHub and manage update.
+With tools like [ghg](https://github.com/songmu/ghg), you can easily install executable from GitHub release and update version.
 
 ```bash
 ghg get sheepla/fzwiki  # Install
@@ -70,7 +70,7 @@ ls -l $(ghg bin)/fzwiki # It will exists executable
 
 ## Configuration
 
-You can change the default language by setting a value in the environment variable `FZWIKI_LANG` .
+You can change the default language for Wikipedia by setting a value in the environment variable `FZWIKI_LANG` .
 
 ```bash
 FZWIKI_LANG="ja" fzwiki ... # --> search from ja.wikipedia.org instead of en.wikipedia.org
