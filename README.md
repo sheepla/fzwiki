@@ -8,7 +8,7 @@
 
 <div align="center">
 
-A command with fzf-like UI to quickly search Wikipedia articles and open it in your browser.
+A command line tool with fzf-like UI to search Wikipedia articles and open it in your browser quickly.
 
 <img src="https://user-images.githubusercontent.com/62412884/148137551-4d2523e6-3292-48bf-896a-52d09f9d0a3e.png" />
 </div>
@@ -53,22 +53,30 @@ cd fzwiki
 go install
 ```
 
-### Binary
+### Download Executable Binary
 
 You can download executable binaries from the release page.
 
 > [Latest Release](https://github.com/sheepla/fzwiki/releases/latest)
 
+**NOTE**:
+
+With tools like [ghg](https://github.com/songmu/ghg), you can easily install executable from GitHub release and update version.
+
+```bash
+ghg get sheepla/fzwiki  # Install
+ls -l $(ghg bin)/fzwiki # It will exists executable
+```
+
 ## Configuration
 
-You can change the default language by setting a value in the environment variable `FZWIKI_LANG` .
+To change the default language for Wikipedia, set a value in the environment variable `FZWIKI_LANG` .
 
 ```bash
 FZWIKI_LANG="ja" fzwiki ... # --> search from ja.wikipedia.org instead of en.wikipedia.org
 ```
 
-If you want to make the setting persistent,
-add the following line to your rc file of the shell.
+To make the setting persistent, add the following line to your rc file of the shell.
 
 
 - **bash** (`~/.bashrc`) or **zsh** (`~/.zshrc`):

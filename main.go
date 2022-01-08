@@ -20,7 +20,7 @@ import (
 type exitCode int
 
 const (
-	appVersion  = "0.0.5"
+	appVersion  = "0.0.6"
 	appName     = "fzwiki"
 	envNameLang = "FZWIKI_LANG"
 
