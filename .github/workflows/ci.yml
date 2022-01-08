@@ -1,5 +1,5 @@
 ---
-name: Test
+name: CI
 
 on:
   push:
