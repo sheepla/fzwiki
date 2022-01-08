@@ -36,25 +36,6 @@ type options struct {
 	Language string `short:"l" long:"lang" description:"Language for wikipedia.org such as \"en\", \"ja\", ..."`
 }
 
-func render(n *html.Node, buf *bytes.Buffer) {
-	if n.Type == html.TextNode {
-		buf.WriteString(n.Data)
-	}
-	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		render(c, buf)
-	}
-}
-
-func html2text(content string) (string, error) {
-	doc, err := html.Parse(strings.NewReader(content))
-	if err != nil {
-		return "", err
-	}
-	var buf bytes.Buffer
-	render(doc, &buf)
-	return buf.String(), nil
-}
-
 func main() {
 	os.Exit(int(Main(os.Args[1:])))
 }
@@ -137,6 +118,25 @@ func Main(args []string) exitCode {
 	}
 
 	return exitCodeOK
+}
+
+func render(n *html.Node, buf *bytes.Buffer) {
+	if n.Type == html.TextNode {
+		buf.WriteString(n.Data)
+	}
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		render(c, buf)
+	}
+}
+
+func html2text(content string) (string, error) {
+	doc, err := html.Parse(strings.NewReader(content))
+	if err != nil {
+		return "", err
+	}
+	var buf bytes.Buffer
+	render(doc, &buf)
+	return buf.String(), nil
 }
 
 func searchArticles(query, lang string) (*client.SearchResult, error) {
