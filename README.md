@@ -8,7 +8,7 @@
 
 <div align="center">
 
-A command with fzf-like UI to quickly search Wikipedia articles and open it in your browser.
+A command line tool with fzf-like UI to search Wikipedia articles and open it in your browser quickly.
 
 <img src="https://user-images.githubusercontent.com/62412884/148137551-4d2523e6-3292-48bf-896a-52d09f9d0a3e.png" />
 </div>
@@ -53,11 +53,20 @@ cd fzwiki
 go install
 ```
 
-### Binary
+### Download Executable Binary
 
 You can download executable binaries from the release page.
 
 > [Latest Release](https://github.com/sheepla/fzwiki/releases/latest)
+
+**NOTE**:
+
+With tools like [ghg](https://github.com/songmu/ghg), you can easily install executable from GitHub and manage update.
+
+```bash
+ghg get sheepla/fzwiki  # Install
+ls -l $(ghg bin)/fzwiki # It will exists executable
+```
 
 ## Configuration
 
