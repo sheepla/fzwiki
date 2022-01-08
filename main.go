@@ -146,8 +146,7 @@ func createPreview(i, w, h int, result *client.SearchResult) string {
 	title := result.Query.Search[i].Title
 	snippet := result.Query.Search[i].Snippet
 	timestamp := result.Query.Search[i].Timestamp
-	s, err := html2text(snippet)
-	if err == nil {
+	if s, err := html2text(snippet); err == nil {
 		snippet = s
 	}
 	return fmt.Sprintf(
