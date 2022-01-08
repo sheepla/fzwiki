@@ -74,18 +74,7 @@ func Main(args []string) exitCode {
 		return exitCodeErr
 	}
 
-	choices, err := fuzzyfinder.FindMulti(
-		result.Query.Search,
-		func(i int) string { return result.Query.Search[i].Title },
-		fuzzyfinder.WithPreviewWindow(
-			func(i, w, h int) string {
-				if i == -1 {
-					return ""
-				}
-				return createPreview(i, w, h, result)
-			},
-		),
-	)
+	choices, err := find(result)
 	if err != nil {
 		log.Fatal(err)
 		return exitCodeErrFuzzyFinder
@@ -154,5 +143,20 @@ func createPreview(i, w, h int, result *client.SearchResult) string {
 		title,
 		runewidth.Wrap(snippet, w/2-5),
 		humanize.Time(timestamp),
+	)
+}
+
+func find(result *client.SearchResult) (choices []int, err error) {
+	return fuzzyfinder.FindMulti(
+		result.Query.Search,
+		func(i int) string { return result.Query.Search[i].Title },
+		fuzzyfinder.WithPreviewWindow(
+			func(i, w, h int) string {
+				if i == -1 {
+					return ""
+				}
+				return createPreview(i, w, h, result)
+			},
+		),
 	)
 }
