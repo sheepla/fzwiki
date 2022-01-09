@@ -47,8 +47,12 @@ func Main(args []string) exitCode {
 	parser.Usage = "[OPTIONS] QUERY..."
 	args, err := parser.ParseArgs(args)
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "Argument parsing failed.")
-		return exitCodeErr
+		if flags.WroteHelp(err) {
+			return exitCodeOK
+		} else {
+			fmt.Fprintln(os.Stderr, "Argument parsing failed.")
+			return exitCodeErr
+		}
 	}
 
 	if opts.Version {

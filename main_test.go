@@ -23,9 +23,9 @@ func TestMain(t *testing.T) {
 			want: exitCodeOK,
 		},
 		{
-			desc: "normal: returns exitCodeErr when arguments have a help option",
+			desc: "normal: returns exitCodeOK when arguments have a help option",
 			args: []string{"-h"},
-			want: exitCodeErr,
+			want: exitCodeOK,
 		},
 		{
 			desc: "abnormal: returns exitCodeErr when arguments are empty",
