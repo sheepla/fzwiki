@@ -56,7 +56,7 @@ cd fzwiki
 go install
 ```
 
-### Download Executable Binary
+### Download executable binary
 
 You can download executable binaries from the release page.
 
