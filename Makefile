@@ -7,6 +7,10 @@ COVERAGE_HTML := .test/cover.html
 fmt:
 	go fmt
 
+.PHONY: lint
+lint:
+	staticcheck
+
 .PHONY: build
 build:
 	go build -o $(BIN)
