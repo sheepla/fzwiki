@@ -139,14 +139,16 @@ func createPreview(i, w, h int, result *client.SearchResult) string {
 	title := result.Query.Search[i].Title
 	snippet := result.Query.Search[i].Snippet
 	timestamp := result.Query.Search[i].Timestamp
+	wordcount := result.Query.Search[i].Wordcount
 	if s, err := html2text(snippet); err == nil {
 		snippet = s
 	}
 	return fmt.Sprintf(
-		"%s\n\n%s\n\n%s",
+		"%s\n\n%s\n\n%s, %s words",
 		title,
 		runewidth.Wrap(snippet, w/2-5),
 		humanize.Time(timestamp),
+		humanize.Comma(wordcount),
 	)
 }
 

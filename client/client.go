@@ -13,9 +13,10 @@ type SearchResult struct {
 	Query struct {
 		Search []struct {
 			Title     string    `json:"title"`
-			Pageid    int       `json:"pageid"`
+			Pageid    int64     `json:"pageid"`
 			Snippet   string    `json:"snippet"`
 			Timestamp time.Time `json:"timestamp"`
+			Wordcount int64     `json:"wordcount"`
 		} `json:"search"`
 	} `json:"query"`
 }
