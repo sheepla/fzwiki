@@ -62,13 +62,33 @@ You can download executable binaries from the release page.
 
 > [Latest Release](https://github.com/sheepla/fzwiki/releases/latest)
 
-**NOTE**:
+### Use GitHub release installer tools
 
-With tools like [ghg](https://github.com/songmu/ghg), you can easily install executable from GitHub release and update version.
+These tools make it easy to install executable binaries from GitHub Release.
+
+with [ghg](https://github.com/Songmu/ghg):
 
 ```bash
 ghg get sheepla/fzwiki  # Install
 ls -l $(ghg bin)/fzwiki # It will exists executable
+```
+
+with [relma](https://github.com/jiro4989/relma):
+
+Copy download link URL from [Latest Release](https://github.com/sheepla/websh-prompt/releases/latest) page, then run below.
+
+
+```bash
+relma init                           # Setup
+relma install {{DOWNLOAD_LINK_URL}}  # Install
+ls -l $(ghg bin)/fzwiki              # It will exists executable
+```
+
+with [gh-install](https://github.com/redraw/gh-install)
+
+```bash
+gh install sheepla/fzwiki # Install
+ls -l ~/.local/bin/fzwiki # It will exists executable
 ```
 
 ## Configuration
@@ -101,3 +121,7 @@ set -Ux FZWIKI_LANG ja
 ## Contributing
 
 Welcome! 💕
+
+## Author
+
+[Sheepla](https://github.com/sheepla)
