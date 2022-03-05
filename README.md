@@ -1,7 +1,14 @@
-
 <div align="right">
-    <img src="https://img.shields.io/static/v1?label=Language&message=Go&color=blue&style=flat-square"/>
-    <img src="https://img.shields.io/static/v1?label=License&message=MIT&color=blue&style=flat-square"/>
+
+![CI](https://github.com/sheepla/fzwiki/actions/workflows/ci.yml/badge.svg)
+![Relase](https://github.com/sheepla/fzwiki/actions/workflows/release.yml/badge.svg)
+
+<a href="https://github.com/sheepla/fzwiki/releases/latest">
+
+![Latest Release](https://img.shields.io/github/v/release/sheepla/fzwiki?style=flat-square)
+
+</a>
+
 </div>
 
 <div align="center"><h1>fzwiki</h1></div>
@@ -9,6 +16,9 @@
 <div align="center">
 
 A command line tool with fzf-like UI to search Wikipedia articles and open it in your browser quickly.
+
+![](https://img.shields.io/static/v1?label=Language&message=Go&color=blue&style=flat-square)
+![](https://img.shields.io/static/v1?label=License&message=MIT&color=blue&style=flat-square)
 
 </div>
 
@@ -75,7 +85,7 @@ ls -l $(ghg bin)/fzwiki # It will exists executable
 
 with [relma](https://github.com/jiro4989/relma):
 
-Copy download link URL from [Latest Release](https://github.com/sheepla/websh-prompt/releases/latest) page, then run below.
+Copy download link URL from [Latest Release](https://github.com/sheepla/fzwiki/releases/latest) page, then run below.
 
 
 ```bash
