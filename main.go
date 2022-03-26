@@ -23,7 +23,9 @@ const (
 	appVersion  = "0.0.9"
 	appName     = "fzwiki"
 	envNameLang = "FZWIKI_LANG"
+)
 
+const (
 	exitCodeOK exitCode = iota
 	exitCodeErr
 	exitCodeErrFuzzyFinder
