@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/url"
 	"os"
+	"path"
 	"strings"
 
 	humanize "github.com/dustin/go-humanize"
@@ -126,14 +127,14 @@ func searchArticles(query, lang string) (*client.SearchResult, error) {
 }
 
 func createPageURL(title, lang string) string {
-	u := &url.URL{}
-	u.Scheme = "https"
 	if lang == "" {
-		u.Host = fmt.Sprintf("%s.wikipedia.org", "en")
-	} else {
-		u.Host = fmt.Sprintf("%s.wikipedia.org", lang)
+		lang = "en"
 	}
-	u.Path = fmt.Sprintf("wiki/%s", title)
+	u := &url.URL{
+		Scheme: "https",
+		Path:   path.Join("wiki", title),
+		Host:   fmt.Sprintf("%s.wikipedia.org", lang),
+	}
 	return u.String()
 }
 
