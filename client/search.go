@@ -28,7 +28,7 @@ type Param struct {
 }
 
 // nolint:exhaustivestruct,exhaustruct,varnamelen
-func newURL(param Param) string {
+func newSearchURL(param Param) string {
 	u := &url.URL{
 		Scheme: "https",
 		Host: func(lang string) string {
@@ -54,7 +54,7 @@ func newURL(param Param) string {
 
 // nolint:goerr113
 func Search(param Param) (*Result, error) {
-	res, err := http.Get(newURL(param))
+	res, err := http.Get(newSearchURL(param))
 	if err != nil {
 		return nil, fmt.Errorf("failed to search articles: %w", err)
 	}
