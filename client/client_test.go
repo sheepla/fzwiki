@@ -12,7 +12,7 @@ func TestNewURL(t *testing.T) {
 		Lang:  "",
 	}
 	want := `https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srlimit=10&srsearch=Go%E8%A8%80%E8%AA%9E`
-	have := newURL(p1)
+	have := newSearchURL(p1)
 	if have != want {
 		t.Errorf("want: %s, have: %s", want, have)
 	}
@@ -23,7 +23,7 @@ func TestNewURL(t *testing.T) {
 		Lang:  "ja",
 	}
 	want = `https://ja.wikipedia.org/w/api.php?action=query&format=json&list=search&srlimit=10&srsearch=Go%E8%A8%80%E8%AA%9E`
-	have = newURL(p2)
+	have = newSearchURL(p2)
 	if have != want {
 		t.Errorf("want: %s, have: %s", want, have)
 	}
@@ -44,4 +44,14 @@ func TestSearch(t *testing.T) {
 	}
 
 	// fmt.Println(result)
+}
+
+func TestNewPageURL(t *testing.T) {
+	title := "Go_(プログラミング言語)"
+	lang := "ja"
+	have := NewPageURL(title, lang)
+	want := `https://ja.wikipedia.org/wiki/Go_%28%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9E%29`
+	if have != want {
+		t.Errorf("want: %s, have: %s", want, have)
+	}
 }

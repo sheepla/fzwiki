@@ -11,6 +11,7 @@ import (
 	"github.com/ktr0731/go-fuzzyfinder"
 	"github.com/mattn/go-runewidth"
 	"github.com/sheepla/fzwiki/client"
+	"github.com/toqueteos/webbrowser"
 )
 
 // nolint:gochecknoglobals
@@ -35,7 +36,7 @@ const (
 
 type options struct {
 	Version bool `short:"V" long:"version" description:"Show version"`
-	// Open    bool `short:"o" long:"open" description:"Open pages URL on the web browser"`
+	Open    bool `short:"o" long:"open" description:"Open pages URL on the web browser"`
 	// Preview bool `short:"p" long:"preview" description:"Preview page on the terminal"`
 	LimitNum int    `short:"n" long:"num" description:"Max number of search items" default:"20"`
 	Lang     string `short:"l" long:"language" description:"Language of wikipedia" default:"en"`
@@ -50,6 +51,7 @@ func main() {
 	os.Exit(int(code))
 }
 
+// nolint:funlen,cyclop
 func run(cliArgs []string) (exitCode, error) {
 	var opts options
 	parser := flags.NewParser(&opts, flags.Default)
@@ -77,16 +79,18 @@ func run(cliArgs []string) (exitCode, error) {
 		return exitCodeErrArgs, errors.New("must reuire arguments")
 	}
 
+	lang := func() string {
+		if envvar := strings.TrimSpace(os.Getenv(envNameLang)); envvar != "" {
+			return envvar
+		}
+
+		return opts.Lang
+	}()
+
 	result, err := client.Search(client.Param{
 		Query: strings.Join(args, " "),
 		Limit: opts.LimitNum,
-		Lang: func() string {
-			if envvar := strings.TrimSpace(os.Getenv(envNameLang)); envvar != "" {
-				return envvar
-			}
-
-			return opts.Lang
-		}(),
+		Lang:  lang,
 	})
 	if err != nil {
 		return exitCodeErrSearch, fmt.Errorf("failed to search articles:%w", err)
@@ -103,13 +107,26 @@ func run(cliArgs []string) (exitCode, error) {
 	}
 
 	for _, idx := range choises {
-		fmt.Println(idx)
+		url := client.NewPageURL(
+			result.Query.Search[idx].Title,
+			lang,
+		)
+
+		if opts.Open {
+			if err := webbrowser.Open(url); err != nil {
+				return exitCodeErrWebBrowser, fmt.Errorf("failed to open the URL (%s): %w", url, err)
+			}
+		} else {
+			// nolint:forbidigo
+			fmt.Println(url)
+
+			return exitCodeOK, nil
+		}
 	}
 
 	return exitCodeOK, nil
 }
 
-// nolint:wrapcheck
 // func find(result *client.Result) (int, error) {
 // 	return fuzzyfinder.Find(
 // 		result.Query.Search,
@@ -136,14 +153,14 @@ func findMulti(result *client.Result) ([]int, error) {
 	return fuzzyfinder.FindMulti(
 		result.Query.Search,
 		func(idx int) string {
-			if idx <= 0 {
+			if idx == -1 {
 				return ""
 			}
 
 			return result.Query.Search[idx].Title
 		},
 		fuzzyfinder.WithPreviewWindow(func(idx, width, height int) string {
-			if idx <= 0 {
+			if idx == -1 {
 				return ""
 			}
 			padding := 5
@@ -168,7 +185,7 @@ func renderPreviewWindow(result *client.Result, idx int) string {
 	)
 }
 
-func sprintfUnlessEmpty(format string, a any) string {
+func sprintfUnlessEmpty(format string, a interface{}) string {
 	if format == "" || a == "" {
 		return ""
 	}
