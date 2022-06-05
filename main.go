@@ -20,8 +20,9 @@ import (
 
 type exitCode int
 
-const (
-	appVersion  = "0.0.9"
+var (
+	appVersion  = "unknown"
+	appRevision = "unknown"
 	appName     = "fzwiki"
 	envNameLang = "FZWIKI_LANG"
 )
@@ -59,7 +60,7 @@ func Main(args []string) exitCode {
 	}
 
 	if opts.Version {
-		fmt.Printf("%s: v%s\n", appName, appVersion)
+		fmt.Printf("%s: v%s-rev%s\n", appName, appVersion, appRevision)
 		return exitCodeOK
 	}
 
