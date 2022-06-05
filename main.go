@@ -2,8 +2,8 @@ package main
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
-	"log"
 	"net/url"
 	"os"
 	"path"
@@ -20,6 +20,7 @@ import (
 
 type exitCode int
 
+// nolint:gochecknoglobals
 var (
 	appVersion  = "unknown"
 	appRevision = "unknown"
@@ -41,10 +42,14 @@ type options struct {
 }
 
 func main() {
-	os.Exit(int(Main(os.Args[1:])))
+	code, err := run(os.Args[1:])
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+	}
+	os.Exit(int(code))
 }
 
-func Main(args []string) exitCode {
+func run(args []string) (exitCode, error) {
 	var opts options
 	parser := flags.NewParser(&opts, flags.Default)
 	parser.Name = appName
@@ -52,21 +57,20 @@ func Main(args []string) exitCode {
 	args, err := parser.ParseArgs(args)
 	if err != nil {
 		if flags.WroteHelp(err) {
-			return exitCodeOK
+			return exitCodeOK, nil
 		} else {
-			fmt.Fprintln(os.Stderr, "Argument parsing failed.")
-			return exitCodeErr
+			return exitCodeErr, fmt.Errorf("argument parsing failed: %w", err)
 		}
 	}
 
 	if opts.Version {
 		fmt.Printf("%s: v%s-rev%s\n", appName, appVersion, appRevision)
-		return exitCodeOK
+
+		return exitCodeOK, nil
 	}
 
 	if len(args) == 0 {
-		fmt.Fprintln(os.Stderr, "Must require argument(s).")
-		return exitCodeErr
+		return exitCodeErr, errors.New("must require arguments.")
 	}
 
 	var lang string
@@ -78,29 +82,29 @@ func Main(args []string) exitCode {
 
 	result, err := searchArticles(strings.Join(args, " "), lang)
 	if err != nil {
-		log.Fatal(err)
-		return exitCodeErr
+		return exitCodeErr, fmt.Errorf("failed to search articles: %w", err)
 	}
 
 	choices, err := find(result)
 	if err != nil {
-		log.Fatal(err)
-		return exitCodeErrFuzzyFinder
+		if errors.Is(fuzzyfinder.ErrAbort, err) {
+			return exitCodeOK, nil
+		}
+		return exitCodeErr, fmt.Errorf("an error occurred on fuzzyfinder: %w", err)
 	}
 
 	for _, idx := range choices {
 		url := createPageURL(result.Query.Search[idx].Title, lang)
 		if opts.Open {
 			if err := webbrowser.Open(url); err != nil {
-				log.Fatal(err)
-				return exitCodeErrWebBrowser
+				return exitCodeErrWebBrowser, fmt.Errorf("an error occurred on opening web browser: %w", err)
 			}
 		} else {
 			fmt.Println(url)
 		}
 	}
 
-	return exitCodeOK
+	return exitCodeOK, nil
 }
 
 func html2text(content string) (string, error) {
@@ -165,6 +169,7 @@ func find(result *client.SearchResult) (choices []int, err error) {
 				if i == -1 {
 					return ""
 				}
+
 				return createPreview(i, w, h, result)
 			},
 		),
