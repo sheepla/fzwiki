@@ -8,6 +8,7 @@ import (
 
 	"github.com/dustin/go-humanize"
 	"github.com/jessevdk/go-flags"
+	"github.com/k3a/html2text"
 	"github.com/ktr0731/go-fuzzyfinder"
 	"github.com/mattn/go-runewidth"
 	"github.com/sheepla/fzwiki/client"
@@ -119,8 +120,6 @@ func run(cliArgs []string) (exitCode, error) {
 		} else {
 			// nolint:forbidigo
 			fmt.Println(url)
-
-			return exitCodeOK, nil
 		}
 	}
 
@@ -173,7 +172,8 @@ func findMulti(result *client.Result) ([]int, error) {
 func renderPreviewWindow(result *client.Result, idx int) string {
 	title := result.Query.Search[idx].Title
 	timestamp := humanize.Time(result.Query.Search[idx].Timestamp)
-	snippet := result.Query.Search[idx].Snippet
+	snippet := html2text.HTML2Text(result.Query.Search[idx].Snippet)
+
 	words := result.Query.Search[idx].Wordcount
 
 	return fmt.Sprintf(
