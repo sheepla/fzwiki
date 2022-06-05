@@ -1,75 +1,47 @@
+//nolint
 package client
 
 import (
 	"testing"
-
-	"github.com/stretchr/testify/assert"
 )
 
-func TestCreateSearchURL(t *testing.T) {
-	tests := []struct {
-		desc  string
-		query string
-		lang  string
-		want  string
-	}{
-		{
-			desc:  "normal: a language code is english (en) when lang is empty",
-			query: "",
-			lang:  "",
-			want:  "https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=",
-		},
-		{
-			desc:  "normal: a language code is japanese (ja) when lang is ja",
-			query: "",
-			lang:  "ja",
-			want:  "https://ja.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=",
-		},
-		{
-			desc:  "normal: query is encoded with parcent encoding",
-			query: "あ",
-			lang:  "ja",
-			want:  "https://ja.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=%E3%81%82",
-		},
+func TestNewURL(t *testing.T) {
+	p1 := Param{
+		Query: "Go言語",
+		Limit: 10,
+		Lang:  "",
 	}
-	for _, tt := range tests {
-		t.Run(tt.desc, func(t *testing.T) {
-			assert := assert.New(t)
-			got := CreateSearchURL(tt.query, tt.lang)
-			assert.Equal(tt.want, got)
-		})
+	want := `https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srlimit=10&srsearch=Go%E8%A8%80%E8%AA%9E`
+	have := newURL(p1)
+	if have != want {
+		t.Errorf("want: %s, have: %s", want, have)
+	}
+
+	p2 := Param{
+		Query: "Go言語",
+		Limit: 10,
+		Lang:  "ja",
+	}
+	want = `https://ja.wikipedia.org/w/api.php?action=query&format=json&list=search&srlimit=10&srsearch=Go%E8%A8%80%E8%AA%9E`
+	have = newURL(p2)
+	if have != want {
+		t.Errorf("want: %s, have: %s", want, have)
 	}
 }
 
-func TestExecute(t *testing.T) {
-	tests := []struct {
-		desc    string
-		url     string
-		wantErr bool
-	}{
-		{
-			desc:    "normal: search succeeds",
-			url:     "https://ja.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=%E3%81%82",
-			wantErr: false,
-		},
-		{
-			desc:    "abnormal: raises error when url is empty",
-			url:     "",
-			wantErr: true,
-		},
+func TestSearch(t *testing.T) {
+	p1 := Param{
+		Query: "Go言語",
+		Limit: 10,
+		Lang:  "ja",
 	}
-	for _, tt := range tests {
-		t.Run(tt.desc, func(t *testing.T) {
-			assert := assert.New(t)
-
-			got, err := Execute(tt.url)
-			if tt.wantErr {
-				assert.Error(err)
-				return
-			}
-
-			assert.NoError(err)
-			assert.NotNil(got)
-		})
+	result, err := Search(p1)
+	if err != nil {
+		t.Errorf("failed to search articles: %s", err)
 	}
+	if result == nil {
+		t.Errorf("result is nil")
+	}
+
+	// fmt.Println(result)
 }
