@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestMain(t *testing.T) {
+func TestRun(t *testing.T) {
 	tests := []struct {
 		desc string
 		args []string
@@ -36,7 +36,7 @@ func TestMain(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.desc, func(t *testing.T) {
 			assert := assert.New(t)
-			got := Main(tt.args)
+			got, _ := run(tt.args)
 			assert.Equal(tt.want, got)
 		})
 	}
